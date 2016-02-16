@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>onTime</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<!--[if IE 9]>
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+		<![endif]-->
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<link href="http://assets.tv.bsvideos.com/0.1.0/vplayer.min.css" rel="stylesheet" type="text/css">
+		<script src="http://assets.tv.bsvideos.com/0.1.0/vplayer.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+
+				var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+				var eventer = window[eventMethod];
+				var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+				var pub_key = '';
+				var has_show = 0;
+
+				parent.postMessage("showVideo", "*");
+
+				var skipButton = $(".ad_close");
+
+				function close() {
+					parent.postMessage("closeVideo", "*");
+				}
+
+
+				skipButton.on("click", function() {
+					close();
+				});
+
+				// Listen to message from child window
+				eventer(messageEvent, function(e) {
+					var key = e.message ? "message" : "data";
+					var data = e[key];
+					var res = data.split(':');
+					if (res) {
+						data = res[0];
+						if (res[0] == "bsvideos" && pub_key == '') {
+
+							pub_key = res[1];
+
+							console.log(pub_key);
+							
+
+							if (pub_key && has_show == 0) {
+
+								has_show = 1;
+
+								var w = $(document).width() * 0.8;
+								//var h = w*10/24;
+								var h = w * 9 / 16;
+
+								$('.ad_video').css({
+									width : w,
+									height : h
+								});
+
+								var videoshow = 0;
+
+								techOptions = ["flash", "html5"];
+
+								window.player = videojs("bsvideos", {
+									techOrder : techOptions,
+									controls : false,
+									autoplay : false,
+									plugins : {
+										vjsVAD : {
+											//vadSWF: swf,
+											debug : true,
+											vadTimeout : 20000,
+											vadGVolume : 0,
+											adaptv : {
+												// consult API Reference for more detailed information and character limits for key-values.
+												// -- Required parameters --
+												// parameters about the player clip view
+												key : 'veremediainc', // Your publisher key provided by Adap.tv.
+												// -- Optional parameters --
+												// parameters about the player clip
+												id : '', // The unique identifier of the clip (limit 64 chars)
+												title : '', // The title of the clip
+												duration : '', // The duration of clip in _seconds_, if applicable
+												url : 'http://www.techtimes.com/test/newplayer2.htm', // A valid HTTP or RMTP URL for the clip (often .flv) file.
+												description : '', // description of clip
+												keywords : '', // A comma-delimited list of tags/keywords
+												categories : '', // A comma-delimited list of top level categories
+												videoPlayerId : 'bsvideos', // The id attribute of the div that contains the player
+												zid : '', // Name of the zone for this view. Optional.
+												companionId : 'adaptvcompanion', // The id attribute of the div to contain the companion ad
+												pageUrlOv : 'http://www.techtimes.com/test/newplayer2.htm', // page URL override
+												context : {
+													pub_name : pub_key
+												}
+											}
+										}
+
+									}
+								}, function() {
+
+									var player = this;
+
+									remain = $(".time_remaining");
+
+									//console.log('test player init 8');
+
+									player.on("vad_AdLoaded", function(event) {
+										player.controlBar.el().style.display = 'none';
+									});
+
+									player.on("vad_AdStarted", function(event) {
+										remain.html("You can skip the ad in 5");
+									});
+
+									player.on("vad_error", function(event) {
+										//$(".ad_video_wrap").html("");
+									});
+
+									
+									player.on("vad_AdOnTime", function(event) {
+										
+										if(event.data[1]>=0){
+										
+											time = Math.floor(event.data[1] - event.data[0]);
+	
+											
+											time_remain = 5 - time;
+	
+											if (time >= 5 && videoshow == 0) {
+												skipButton.show();
+												remain.hide();
+												videoshow = 1;
+											}
+											if (time_remain > 0) {
+												remain.show();
+												remain.html("You can skip the ad in " + time_remain);
+											}
+										
+										}else{
+											skipButton.show();
+										}
+
+									});
+
+									player.on("vad_AdComplete", function(event) {
+										close();
+										//player.controlBar.el().style.display = 'block'
+									});
+
+									player.play();
+									
+									$("#bsvideos").mouseover(function() {
+										player.vad_setGVolume(0.1);
+									});
+
+									$("#bsvideos").mouseout(function() {
+										player.vad_setGVolume(0);
+									});
+
+
+								});
+							}
+
+						}
+					}
+				}, false);
+
+			});
+		</script>
+
+		<style>
+			.ad_video_wrap {
+				background-color: rgba(0,0,0,.65);
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0px;
+				left: 0;
+				bottom: 0;
+				right: 0;
+			}
+			.ad_video {
+				text-align: center;
+				position: absolute;
+				display: block;
+				top: 50%;
+				margin-left: 50%;
+				margin-right: -50%;
+				transform: translate(-50%, -50%);
+			}
+			.ad_close {
+				font-weight: 700;
+				cursor: pointer;
+				width: 30px;
+				height: 30px;
+				display: block;
+				position: absolute;
+				top: -17px;
+				right: -17px;
+				z-index: 999999;
+				text-align: center;
+			}
+
+			.time_remaining {
+				cursor: pointer;
+				display: block;
+				position: absolute;
+				bottom: 10px;
+				right: 9px;
+				z-index: 999999;
+				text-align: center;
+				background: #000;
+				opacity: 0.5;
+				padding: 20px;
+				color: #fff;
+			}
+
+			:focus {
+				outline: none;
+			}
+
+		</style>
+	</head>
+
+	<body marginwidth="0" marginheight="0" style="margin:0 auto; text-align:center;cursor: pointer;">
+		<div class="ad_video_wrap">
+			<div class="ad_video">
+
+				<video id="bsvideos" class="video-js vjs-tech vjs-default-skin"
+				preload="auto" width="100%" height="100%">
+					<source src="http://tv.bsvideos.com/videos/video.mp4" type='video/mp4'/>
+				</video>
+
+			
+				<div class="ad_close" style="display: none">
+					<img src="http://tv.bsvideos.com/images/close.png" />
+				</div>
+				<span class="time_remaining" style="display: none"> </span>
+			</div>
+
+		</div>
+	</body>
+</html>

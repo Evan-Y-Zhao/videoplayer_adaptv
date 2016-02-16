@@ -1,0 +1,49 @@
+.articlevideolist_cimage {
+    position: relative;
+}
+.testing_css {
+	position:fixed;
+	top:70px;
+	width:400px;
+	height:168.75px;
+	z-index:10;
+}
+.main-preview-player {
+	margin:0 auto;
+	text-align:center;
+}
+.title_player {
+	font-size:12px;
+	line-height:15px;
+}
+.player_on {
+	background-color:#e30000;
+	filter:alpha(Opacity=75);
+	opacity:.75;
+	z-index:53;
+	position:absolute;
+	color:#fefefe;
+	padding:10px;
+	-webkit-font-smoothing:antialiased;
+	font-size:12px;
+	font-size:.75rem;
+	bottom:0px;
+	width:70px;
+}
+.media__icon {
+	background:rgba(12,12,12,.3);
+	color:#fefefe;
+	padding:5px;
+	font-weight:400;
+	font-size:18px;
+	font-size:1.125 rem;
+	line-height:1;
+	position:absolute;
+	bottom:0px;
+}
+.on {
+	display:block;
+}
+.off {
+	display:none;
+}

@@ -1,0 +1,7 @@
+/node_modules/
+*.log
+/build/**/*
+!/build/.keep
+/dist/**/*
+!/dist/.keep
+/.vagrant/

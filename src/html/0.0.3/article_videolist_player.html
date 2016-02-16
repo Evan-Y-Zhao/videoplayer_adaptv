@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+
+		<title>Responsive Player</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<!--[if IE 9]>
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+		<![endif]-->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<!-- VideoJS v4.11.4 -->
+		<link href="http://assets.tv.bsvideos.com/0.2.5/vplayer.min.css" rel="stylesheet" type="text/css">
+		<script src="http://assets.tv.bsvideos.com/0.2.5/vplayer.min.js"></script>
+
+	</head>
+
+	<body marginwidth="0" marginheight="0" style="margin:0 auto; text-align:center;">
+		<div class="containing-block">
+			<div class="outer-container">
+				<video id="video-playlist" class="video-js vjs-default-skin vjs-big-play-centered BrightcoveExperience" controls preload="none" width="100%" height="100%"></video>
+			</div>
+		</div>
+		<style type="text/css">
+            .containing-block {
+                width: 100%;
+            }
+            .outer-container {
+                position: relative;
+                height: 0;
+                padding-bottom: 56.25%;
+            }
+            .BrightcoveExperience {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+		</style>
+
+		<script type="text/javascript">
+     			var domain_name = '';
+				var publisher_id = '';
+				var url = window.location.search.substring(1);
+				var qArray = url.split('&');
+				for (var i = 0; i < qArray.length; i++) {
+				    var pArr = qArray[i].split('=');
+				    if (pArr[0] == "domain_name")
+				        domain_name = pArr[1];
+				    if (pArr[0] == "pub_id")
+				        publisher_id = pArr[1];
+				}
+		</script>
+		
+		<script src="http://tv.bsvideos.com/0.0.3/dist/videolist_script.min.js"></script>
+
+	</body>
+
+</html>
