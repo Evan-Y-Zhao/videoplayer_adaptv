@@ -93,3 +93,8 @@ Your actual integration will be significantly more complex.
 navigate to http://localtest:8000/demo/test2.html
 
 `grunt` - compile your source
+
+## Test
+Suggest to Test on BrowserStack, A wonderful testing tool For mobile.
+
+![Alt text](demo/Logo-01.svg)
