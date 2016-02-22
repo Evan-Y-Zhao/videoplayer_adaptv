@@ -97,4 +97,4 @@ navigate to http://localtest:8000/demo/test2.html
 ## Test
 Suggest to Test on BrowserStack, A wonderful testing tool For mobile.
 
-![Alt text](demo/Logo-01.svg)
+www.browserstack.com
