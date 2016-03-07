@@ -53,6 +53,38 @@ Here's an outline of what a basic ad integration might look like. It only plays 
             // }
             // }
             ],
+            mid_roll : [{
+                //vadSWF: '../dist/videojs-vad.swf',
+                vadTimeout : -1,
+                vadOnTimeInterval : 1000,
+                vadGVolume : 0.5,
+                //debug: vadFlashDebug,
+                techs : ['flash'],
+                type : 'adaptv',
+                adaptv : {
+                    // consult API Reference for more detailed information and character limits for key-values.
+                    // -- Required parameters --
+                    // parameters about the player clip view
+                    key : 'veremediainc', // Your publisher key provided by Adap.tv.
+                    // -- Optional parameters --
+                    // parameters about the player clip
+                    id : '', // The unique identifier of the clip (limit 64 chars)
+                    title : '', // The title of the clip
+                    duration : '', // The duration of clip in _seconds_, if applicable
+                    url : 'http://www.techtimes.com/test/newplayer2.htm', // A valid HTTP or RMTP URL for the clip (often .flv) file.
+                    description : '', // description of clip
+                    keywords : '', // A comma-delimited list of tags/keywords
+                    categories : '', // A comma-delimited list of top level categories
+                    videoPlayerId : 'player', // The id attribute of the div that contains the player
+                    zid : '', // Name of the zone for this view. Optional.
+                    companionId : 'adaptvcompanion', // The id attribute of the div to contain the companion ad
+                    pageUrlOv : 'http://www.techtimes.com/test/newplayer2.htm', // page URL override
+                    context : {
+                        pub_name : pub_name
+                    }
+                }
+            }],
+
 
         };
 
@@ -97,4 +129,4 @@ navigate to http://localtest:8000/demo/test2.html
 ## Test
 Suggest to Test on BrowserStack, A wonderful testing tool For mobile.
 
-www.browserstack.com
+ [browserstack.com](http://www.browserstack.com/ "Title")
